@@ -1,3 +1,7 @@
+"""
+Lexer reads source code character by character and sends tokens to parser
+"""
+
 import re
 
 # The lexer yields one of these types for each token.
@@ -19,6 +23,7 @@ class CharacterToken(object):
     def __init__(self, char):
         self.char = char
     def __eq__(self, other):
+		# first check they're same type, then check value
         return isinstance(other, CharacterToken) and self.char == other.char
     def __ne__(self, other):
         return not self == other
