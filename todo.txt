@@ -1,0 +1,3 @@
+Look more into lexers/parsers/tokenizers
+
+Possibly write a lexer and not copy/paste tutorial
