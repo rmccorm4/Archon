@@ -1,0 +1,5 @@
+Speed mostly based on Intrepreted vs Compiled?
+
+Does the lexer heavily influence speed?
+
+	-The actual implementation of the lexer is a single function called Tokenize, which takes a string and yields tokens. For simplicity, we will use regular expressions to parse out the tokens. This is ***terribly inefficient, but perfectly sufficient for our needs***
