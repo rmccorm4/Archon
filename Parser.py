@@ -1,3 +1,6 @@
+import AST
+import Lexer
+
 class Parser(object):
 	def __init__(self, tokens, binop_precedence):
 		self.tokens = tokens
@@ -12,7 +15,7 @@ class Parser(object):
 
 	# Gets precedence of current token, or -1 if not an operator
 	def GetCurrentTokenPrecedence(self):
-		if isinstance(self.current, CharacterToken):
+		if isinstance(self.current, Lexer.CharacterToken):
 			# default value = -1 if char not in operator dictionary
 			return self.binop_precedence.get(self.current.char, -1)
 		else:
@@ -25,31 +28,31 @@ class Parser(object):
 		self.Next()
 
 		# If identifier not followed by parentheses, then its a variable
-		if self.current != CharacterToken('('):
-			return VariableExpressionNode(identifierName)
+		if self.current != Lexer.CharacterToken('('):
+			return AST.VariableExpressionNode(identifierName)
 
 		# If identifier followed by parentheses, its a function call
 		# eat '('
 		self.Next()
 		args = []
-		if self.current != CharacterToken(')'):
+		if self.current != Lexer.CharacterToken(')'):
 			while True:
 				args.append(self.ParseExpression())
 				# If there are no more arguments
-				if self.current == CharacterToken(')'):
+				if self.current == Lexer.CharacterToken(')'):
 					break
 				# If there was another token without a comma separator
-				elif self.current != CharacterToken(','):
+				elif self.current != Lexer.CharacterToken(','):
 					raise RuntimeError('Expected ")" or "," in argument list.')
 				self.Next()
 		
 		# eat ')'
 		self.Next()
-		return CallExpressionNode(identifierName, args)
+		return AST.CallExpressionNode(identifierName, args)
 
 	# Handle expressions with numbers
 	def ParseNumberExpr(self):
-		result = NumberExpressionNode(self.current.value)
+		result = AST.NumberExpressionNode(self.current.value)
 		# consume the number
 		self.Next()
 		return result
@@ -59,7 +62,7 @@ class Parser(object):
 		# eat '('
 		self.Next()
 		contents = self.ParseExpression()
-		if self.current != CharacterToken(')'):
+		if self.current != Lexer.CharacterToken(')'):
 			raise RuntimeError('Exprected ")".')
 		# eat ')'
 		self.Next()
@@ -67,11 +70,11 @@ class Parser(object):
 
 	# Helper function to wrap everything into one entry point
 	def ParsePrimary(self):
-		if isinstance(self.current, IdentifierToken):
+		if isinstance(self.current, Lexer.IdentifierToken):
 			return self.ParseIdentifierExpr()
-		elif isinstance(self.current, NumberToken):
+		elif isinstance(self.current, Lexer.NumberToken):
 			return self.ParseNumberExpr()
-		elif self.current == CharacterToken(')'):
+		elif self.current == Lexer.CharacterToken(')'):
 			return self.ParseParenExpr()
 		else:
 			raise RuntimeError('Unknown token when expecting an expression.')
@@ -97,7 +100,7 @@ class Parser(object):
 				right = self.ParseBinOpRHS(right, precedence + 1)
 
 			# Merge left and right
-			left = BinaryOperatorExpressionNode(binaryOperator, left, right)
+			left = AST.BinaryOperatorExpressionNode(binaryOperator, left, right)
 
 	def ParseExpression(self):
 		left = self.ParsePrimary()
@@ -105,40 +108,40 @@ class Parser(object):
 
 	def ParsePrototype(self):
 		# what is IdentifierToken? class variable?
-		if not isinstance(self.current, IdentifierToken):
+		if not isinstance(self.current, Lexer.IdentifierToken):
 			raise RuntimeError('Expected function name in prototype.')
 
 		functionName = self.current.name
 		# eat function name
 		self.Next()
 
-		if self.current != CharacterToken('('):
+		if self.current != Lexer.CharacterToken('('):
 			raise RuntimeError('Expected "(" in prototype.')
 		# eat '('
 		self.Next()
 
 		argNames = []
-		while isinstance(self.current, IdentifierToken):
+		while isinstance(self.current, Lexer.IdentifierToken):
 			argNames.append(self.current.name)
 			self.Next()
 
-		if self.current != CharacterToken(')'):
+		if self.current != Lexer.CharacterToken(')'):
 			raise RuntimeError('Expected ")" in prototype.')
 
 		# Success. Eat ')'
 		self.Next()	
-		return PrototypeNode(functionName, argNames)
+		return AST.PrototypeNode(functionName, argNames)
 
 	def ParseDefinition(self):
 		# Eat def
 		self.Next()
 		proto = self.ParsePrototype()
 		body = self.ParseExpression()
-		return FunctionNode(proto, body)
+		return AST.FunctionNode(proto, body)
 	
 	def ParseTopLevelExpr(self):
-		proto = PrototypeNode('', [])
-		return FunctionNode(proto, self.ParseExpression())
+		proto = AST.PrototypeNode('', [])
+		return AST.FunctionNode(proto, self.ParseExpression())
 
 	def ParseExtern(self):
 		# Eat extern

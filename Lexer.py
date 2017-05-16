@@ -45,7 +45,7 @@ def Tokenize(string):
 		# Ignore whitespace
 		if string[0].isspace():
 			string = string[1:]
-		continue
+			continue
 
 		# Run regexes.
 		comment_match = REGEX_COMMENT.match(string)

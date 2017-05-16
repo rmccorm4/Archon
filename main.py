@@ -26,11 +26,11 @@ def main():
 
 		while True:
 			# If you hit EOF then stop
-			if isinstance(parser.current, EOFToken):
+			if isinstance(parser.current, Lexer.EOFToken):
 				break
-			if isinstance(parser.current, DefToken):
+			if isinstance(parser.current, Lexer.DefToken):
 				parser.HandleDefinition()
-			elif isinstance(parser.current, ExternToken):
+			elif isinstance(parser.current, Lexer.ExternToken):
 				parser.HandleExtern()
 			else:
 				parser.HandleTopLevelExpression()
