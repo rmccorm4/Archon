@@ -1,3 +1,5 @@
+import Lexer
+
 # Driver code		
 def main():
 	# Setup standard binary operators
@@ -11,17 +13,15 @@ def main():
 
 	# Run the main 'interpreter loop'
 	while True:
-		print('ready>', 
 		try:
-			raw = input()
+			raw = input('ready> ')
 		# Allow user to quit with Ctrl+C
 		except KeyboardInterrupt:
 			return
-		)
 
 		# Tokenize() is in the lexer class so would be Lexer.Tokenize()
 		# And need to import Lexer
-		parser = Parser(Tokenize(raw), operatorPrecedence)
+		parser = Parser(Lexer.Tokenize(raw), operatorPrecedence)
 
 		while True:
 			# If you hit EOF then stop

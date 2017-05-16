@@ -18,21 +18,21 @@ class ExternToken(object):
 	pass
 
 class IdentifierToken(object):
-    def __init__(self, name):
-        self.name = name
+	def __init__(self, name):
+		self.name = name
 
 class NumberToken(object):
-    def __init__(self, value):
-        self.value = value
+	def __init__(self, value):
+		self.value = value
 
 class CharacterToken(object):
-    def __init__(self, char):
-        self.char = char
-    def __eq__(self, other):
+	def __init__(self, char):
+		self.char = char
+	def __eq__(self, other):
 		# first check they're same type, then check value
-        return isinstance(other, CharacterToken) and self.char == other.char
-    def __neq__(self, other):
-        return not self == other
+		return isinstance(other, CharacterToken) and self.char == other.char
+	def __neq__(self, other):
+		return not self == other
 
 # Regular expressions that tokens and comments of our language.
 REGEX_NUMBER = re.compile('[0-9]+(?:.[0-9]+)?')
@@ -41,11 +41,11 @@ REGEX_COMMENT = re.compile('#.*')
 
 # Look into yield and why its used for this?
 def Tokenize(string):
-    while string: 
+	while string: 
 		# Ignore whitespace
-        if string[0].isspace():
-           string = string[1:]
-           continue
+		if string[0].isspace():
+			string = string[1:]
+		continue
 
 		# Run regexes.
 		comment_match = REGEX_COMMENT.match(string)
@@ -74,16 +74,16 @@ def Tokenize(string):
 				yield DefToken()
 			elif identifier == 'extern':
 				yield ExternToken()
-		  	else:
+			else:
 				yield IdentifierToken(identifier)
-		  	string = string[len(identifier):]
+			string = string[len(identifier):]
 
 		# Finally, if we haven't recognized a comment, a number of an identifier,
 		# we yield the current character as an "unknown character" token. This is
 		# used, for example, for operators like ``+`` or ``*``:
 		else: # Yield the unknown character.
 			yield CharacterToken(string[0])
-		  	string = string[1:]
+			string = string[1:]
 
 	# Once we're done with the loop, we return a final end-of-file token:
 	yield EOFToken()
