@@ -158,7 +158,7 @@ class Parser(object):
 	def Handle(self, function, message):
 		try:
 			function()
-			print message
+			print(message)
 		except Exception as error:
 			print('Error:', error)
 			try:

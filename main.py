@@ -1,4 +1,5 @@
 import Lexer
+import Parser
 
 # Driver code		
 def main():
@@ -21,7 +22,7 @@ def main():
 
 		# Tokenize() is in the lexer class so would be Lexer.Tokenize()
 		# And need to import Lexer
-		parser = Parser(Lexer.Tokenize(raw), operatorPrecedence)
+		parser = Parser.Parser(Lexer.Tokenize(raw), operatorPrecedence)
 
 		while True:
 			# If you hit EOF then stop
