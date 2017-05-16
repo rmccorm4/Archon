@@ -8,8 +8,8 @@ class Parser(object):
 	# Parser.current is the current token being looked at by parser
 	# Parser.Next() reads another token from lexer and updates parser.current
 	def Next(self):
-		self.current = self.tokens.next()
-	
+		self.current = next(self.tokens)
+
 	# Gets precedence of current token, or -1 if not an operator
 	def GetCurrentTokenPrecedence(self):
 		if isinstance(self.current, CharacterToken):
