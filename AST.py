@@ -141,6 +141,49 @@ class Parser(object):
 			# Merge left and right
 			left = BinaryOperatorExpressionNode(binaryOperator, left, right)
 
+	def ParsePrototype(self):
+		# what is IdentifierToken? class variable?
+		if not isinstance(self.current, IdentifierToken):
+			raise RuntimeError('Expected function name in prototype.')
+
+		functionName = self.current.name
+		# eat function name
+		self.Next()
+
+		if self.current != CharacterToken('('):
+			raise RuntimeError('Expected "(" in prototype.')
+		# eat '('
+		self.Next()
+
+		argNames = []
+		while isinstance(self.current, IdentifierToken):
+			argNames.append(self.current.name)
+			self.Next()
+
+		if self.current != CharacterToken(')'):
+			raise RuntimeError('Expected ")" in prototype.')
+
+		# Success. Eat ')'
+		self.Next()
+		
+		return PrototypeNode(functionName, argNames)
+
+	def ParseDefinition(self):
+		# Eat def
+		self.Next()
+		proto = self.ParsePrototype()
+		body = self.ParseExpression()
+		return FunctionNode(proto, body)
+
+	def ParseExtern(self):
+		# Eat extern
+		self.Next()
+		return self.ParsePrototype()
+
+	def ParseTopLevelExpr(self):
+		proto = PrototypeNode('', [])
+		return FunctionNode(proto, self.ParseExpression())
+
 	# Gets precedence of current token, or -1 if not an operator
 	def GetCurrentTokenPrecedence(self):
 		if isinstance(self.current, CharacterToken):
