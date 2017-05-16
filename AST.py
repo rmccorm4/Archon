@@ -207,7 +207,22 @@ def main():
 
 	# Run the main 'interpreter loop'
 	while True:
-		# ...?
-		# raw would be some text file to process?
+		print('ready>', 
+		try:
+			raw = input()
+		# Allow user to quit with Ctrl+C
+		except KeyboardInterrupt:
+			return
+		)
 		# Tokenize() is in the lexer class so would be Lexer.Tokenize()
 		parser = Parser(Tokenize(raw), operatorPrecedence)
+
+		while True:
+			if isinstance(parser.current, EOFToken):
+				break
+			if isinstance(parser.current, DefToken):
+				parser.HandleDefinition()
+			elif isinstance(parser.current, ExternToken):
+				parser.HandleExtern()
+			else:
+				parser.HandleTopLevelExpression()
