@@ -7,3 +7,5 @@ Add to lexer and parser for what we want to add to language
 Process a text file and make sure it works
 
 Start Chapter 3 of tutorial
+
+Look into pycache, what is it? Why was it created? Generators?
