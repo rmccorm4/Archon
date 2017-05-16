@@ -114,5 +114,57 @@ class Parser(object):
 			return self.ParseParenExpr()
 		else:
 			raise RuntimeError('Unknown token when expecting an expression.')
-	
-# Next part here starts at main/driver code		
+
+	def ParseExpression(self):
+		left = self.ParsePrimary()
+		return self.ParseBinOpRHS(left, 0)
+
+	def ParseBinOpRHS(self, left, leftPrecedence):
+		#if this is a binary operator, find it's precedence
+		while True:
+			precedence = self.GetCurrentTokenPrecedence()
+			# If current has less precedence than left, return left
+			if precedence < leftPrecedence:
+				return left
+
+			binaryOperator = self.current.char
+			# Eat the operator
+			self.Next()
+			# Parse the primary expression after binary operator
+			right = self.ParsePrimary()
+			
+			nextPrecedence = self.GetCurrentTokenPrecedence()
+			if precedence < nextPrecedence:	
+				# if body omitted?
+				right = self.ParseBinOpRHS(right, precedence + 1)
+
+			# Merge left and right
+			left = BinaryOperatorExpressionNode(binaryOperator, left, right)
+
+	# Gets precedence of current token, or -1 if not an operator
+	def GetCurrentTokenPrecedence(self):
+		if isinstance(self.current, CharacterToken):
+			# default value = -1 if char not in operator dictionary
+			return self.binop_precedence.get(self.current.char, -1)
+		else:
+			return -1
+
+
+
+# Driver code		
+def main():
+	# Setup standard binary operators
+	# 1 is lowest possible precedence, 40 is highest
+	operatorPrecedence = {
+		'<': 10, 
+		'+': 20, 
+		'-': 20, 
+		'*': 40
+	}
+
+	# Run the main 'interpreter loop'
+	while True:
+		# ...?
+		# raw would be some text file to process?
+		# Tokenize() is in the lexer class so would be Lexer.Tokenize()
+		parser = Parser(Tokenize(raw), operatorPrecedence)
