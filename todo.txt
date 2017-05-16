@@ -1,7 +1,9 @@
 Look more into lexers/parsers/tokenizers
 
-Possibly write a lexer and not copy/paste tutorial
-
-Look into parsers
-
 Think about what keywords will be, comment identifier, etc.
+
+Add to lexer and parser for what we want to add to language
+
+Process a text file and make sure it works
+
+Start Chapter 3 of tutorial
