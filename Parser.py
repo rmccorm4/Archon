@@ -162,6 +162,7 @@ class Parser(object):
 		try:
 			function()
 			print(message)
+			print(eval(message))
 		except Exception as error:
 			print('Error:', error)
 			try:

@@ -15,7 +15,7 @@ def main():
 	# Run the main 'interpreter loop'
 	while True:
 		try:
-			raw = input('ready> ')
+			raw = input('archon> ')
 		# Allow user to quit with Ctrl+C
 		except KeyboardInterrupt:
 			return
