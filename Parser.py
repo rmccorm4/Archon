@@ -1,4 +1,4 @@
-import AST
+import AbstractSyntaxTree
 import Lexer
 
 class Parser(object):
@@ -29,7 +29,7 @@ class Parser(object):
 
 		# If identifier not followed by parentheses, then its a variable
 		if self.current != Lexer.CharacterToken('('):
-			return AST.VariableExpressionNode(identifierName)
+			return AbstractSyntaxTree.VariableExpressionNode(identifierName)
 
 		# If identifier followed by parentheses, its a function call
 		# eat '('
@@ -48,11 +48,11 @@ class Parser(object):
 		
 		# eat ')'
 		self.Next()
-		return AST.CallExpressionNode(identifierName, args)
+		return AbstractSyntaxTree.CallExpressionNode(identifierName, args)
 
 	# Handle expressions with numbers
 	def ParseNumberExpr(self):
-		result = AST.NumberExpressionNode(self.current.value)
+		result = AbstractSyntaxTree.NumberExpressionNode(self.current.value)
 		# consume the number
 		self.Next()
 		return result
@@ -100,7 +100,7 @@ class Parser(object):
 				right = self.ParseBinOpRHS(right, precedence + 1)
 
 			# Merge left and right
-			left = AST.BinaryOperatorExpressionNode(binaryOperator, left, right)
+			left = AbstractSyntaxTree.BinaryOperatorExpressionNode(binaryOperator, left, right)
 
 	def ParseExpression(self):
 		left = self.ParsePrimary()
@@ -130,18 +130,18 @@ class Parser(object):
 
 		# Success. Eat ')'
 		self.Next()	
-		return AST.PrototypeNode(functionName, argNames)
+		return AbstractSyntaxTree.PrototypeNode(functionName, argNames)
 
 	def ParseDefinition(self):
 		# Eat def
 		self.Next()
 		proto = self.ParsePrototype()
 		body = self.ParseExpression()
-		return AST.FunctionNode(proto, body)
+		return AbstractSyntaxTree.FunctionNode(proto, body)
 	
 	def ParseTopLevelExpr(self):
-		proto = AST.PrototypeNode('', [])
-		return AST.FunctionNode(proto, self.ParseExpression())
+		proto = AbstractSyntaxTree.PrototypeNode('', [])
+		return AbstractSyntaxTree.FunctionNode(proto, self.ParseExpression())
 
 	def ParseExtern(self):
 		# Eat extern
@@ -162,7 +162,6 @@ class Parser(object):
 		try:
 			function()
 			print(message)
-			print(eval(message))
 		except Exception as error:
 			print('Error:', error)
 			try:
