@@ -9,3 +9,6 @@ Process a text file and make sure it works
 Start Chapter 3 of tutorial
 
 Look into pycache, what is it? Why was it created? Generators?
+
+Look into how to parse expressions with no spaces
+-> "3+5" considered a string rather than being 3 "+" 5
