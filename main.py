@@ -1,5 +1,6 @@
 import Lexer
 import Parser
+import AbstractSyntaxTree
 
 # Driver code		
 def main():
@@ -18,7 +19,7 @@ def main():
 			raw = input('archon> ')
 		# Allow user to quit with Ctrl+C
 		except KeyboardInterrupt:
-			return
+			break
 
 		# Tokenize() is in the lexer class so would be Lexer.Tokenize()
 		# And need to import Lexer
@@ -34,6 +35,8 @@ def main():
 				parser.HandleExtern()
 			else:
 				parser.HandleTopLevelExpression()
+
+	print('\n', AbstractSyntaxTree.g_llvm_module)
 
 if __name__ == '__main__':
 	main()
