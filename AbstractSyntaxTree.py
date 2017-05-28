@@ -109,8 +109,8 @@ class PrototypeNode(object):
 			# THIS IS ESSENTIALLY FUNCTION OVERLOADING, MAYBE CHANGE IN FUTURE
 			# If function took different number of args, reject it
 			if len(callee.args) != len(self.args):
-				raise RuntimeError('Redeclaration of function with different
-									number of args')
+				raise RuntimeError('Redeclaration of function with different' +
+									' number of args')
 
 			# Set names for all args and add them to var symbol table
 			for arg, arg_name in zip(function.args, self.args):
