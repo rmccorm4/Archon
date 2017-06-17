@@ -16,3 +16,5 @@ Look into how to parse expressions with no spaces
 ***
 Add 'help <function_name>' as a functionality similar to matlab, comments directly under function name in function's file
 ***
+
+In the AST, the type of argument isn't accounted for. In Archon the ExpressionNode class needs a type field.
