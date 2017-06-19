@@ -10,7 +10,8 @@ g_llvm_builder = None
 # and their LLVM representations
 g_name_values = {}
 
-
+# The function optimization passes manager.
+g_llvm_pass_manager = FunctionPassManager.new(g_llvm_module)
 
 # Base class for all expression nodes.
 class ExpressionNode(object): 
